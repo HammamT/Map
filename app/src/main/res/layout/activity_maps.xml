@@ -3,19 +3,36 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
-
-
-
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="coordinates"
-        android:layout_margin="10dp"
+        android:text="coordinate x"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:id="@+id/txtc"
         android:textAlignment="center" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="coordinate y"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp"
+        android:id="@+id/txtcy"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="city"
+
+        android:textSize="20dp"
+        android:id="@+id/txtc1"
+        android:textAlignment="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,13 +43,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="weather"
+            android:id="@+id/weather"
             android:layout_margin="10dp"
+            android:textSize="20dp"
             android:textAlignment="textStart" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="degree"
+            android:textSize="20dp"
+            android:id="@+id/degree"
             android:layout_margin="10dp"
             android:textAlignment="viewEnd" />
 
