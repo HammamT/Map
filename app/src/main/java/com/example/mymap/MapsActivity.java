@@ -6,6 +6,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mymap.weatherapi.Weather;
@@ -34,7 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView degree, weather, txtc, txtc1, txtcy;
     Geocoder geocoder;
     Weather weatherr;
-
+    ProgressBar pBar3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         txtc = (TextView)findViewById(R.id.txtc);
         txtc1 = (TextView)findViewById(R.id.txtc1);
         txtcy = (TextView)findViewById(R.id.txtcy);
-
+        pBar3 = (ProgressBar)findViewById(R.id.progressBar);
         geocoder = new Geocoder(this, Locale.getDefault());
     }
 
@@ -76,11 +78,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Run the request
 
+        //pBar3.setVisibility(View.VISIBLE);
+        pBar3.setVisibility(View.VISIBLE);
         service.get("a21a79d3c32d92ebc8f8ee542782377f", lat, lon).enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                pBar3.setVisibility(View.GONE);
                 if(response.isSuccessful()) {
-                    degree.setText(Double.toString(response.body().getmMain().getmTemp() - 273.15));
+                    degree.setText(Double.toString(response.body().getmMain().getmTemp() - 273));
                     weather.setText(response.body().getmWeather().get(0).getmDescription());
                 }else{
                     return;

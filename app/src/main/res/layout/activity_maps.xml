@@ -7,6 +7,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        ></ProgressBar>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +23,7 @@
         android:textSize="20dp"
         android:id="@+id/txtc"
         android:textAlignment="center" />
+
 
     <TextView
         android:layout_width="match_parent"
@@ -29,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="city"
-
         android:textSize="20dp"
         android:id="@+id/txtc1"
         android:textAlignment="center" />
