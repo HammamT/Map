@@ -35,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     TextView degree, weather, txtc, txtc1, txtcy;
     Geocoder geocoder;
-    Weather weatherr;
+    //Weather weatherr;
     ProgressBar pBar3;
 
     @Override
@@ -79,19 +79,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Run the request
 
         //pBar3.setVisibility(View.VISIBLE);
+
         pBar3.setVisibility(View.VISIBLE);
+        degree.setVisibility(View.GONE);
+        weather.setVisibility(View.GONE);
+        txtc.setVisibility(View.GONE);
+        txtc1.setVisibility(View.GONE);
+        txtcy.setVisibility(View.GONE);
+
         service.get("a21a79d3c32d92ebc8f8ee542782377f", lat, lon).enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+
                 pBar3.setVisibility(View.GONE);
+                degree.setVisibility(View.VISIBLE);
+                weather.setVisibility(View.VISIBLE);
+                txtc.setVisibility(View.VISIBLE);
+                txtc1.setVisibility(View.VISIBLE);
+                txtcy.setVisibility(View.VISIBLE);
+
                 if(response.isSuccessful()) {
-                    degree.setText(Double.toString(response.body().getmMain().getmTemp() - 273));
+
+                    degree.setText(Double.toString(Math.ceil(response.body().getmMain().getmTemp()) - 273));
                     weather.setText(response.body().getmWeather().get(0).getmDescription());
                 }else{
                     return;
                 }
             }
-
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
                 Log.d("", "Error");
@@ -105,9 +119,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(32.2227, 35.2621);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Nablus"));
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Palestine, Nablus"));
         mMap.animateCamera(CameraUpdateFactory.newLatLng(sydney));
-        txtc1.setText("Nablus");
+        txtc1.setText("Palestine, Nablus");
         txtc.setText(32.2227 + "°");
         txtcy.setText(35.2621 + "°");
         fetchAndUpdateWeather(Double.toString(32.2227), Double.toString(35.2621));
@@ -117,8 +131,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng latLng) {
                 mMap.clear();
-                double x = latLng.latitude;
-                double y = latLng.longitude;
+                double x = Math.ceil(latLng.latitude);
+                double y = Math.ceil(latLng.longitude);
                 LatLng sydney = new LatLng(x, y);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(sydney));
                 txtc.setText(Double.toString(x) + "°");
@@ -129,19 +143,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                addresses.get(0).getAdminArea();
+                //addresses.get(0).getAdminArea();
                 String city = addresses.get(0).getLocality();
+                String country = addresses.get(0).getCountryName();
 
                 //Log.d("\n", city + "Hammam \n\n\n\n\n\n\n\n");
 
-                if(city == null){
+                if(city == null && country == null){
                     txtc1.setText("Unknown");
-                }else {
+                    mMap.addMarker(new MarkerOptions().position(sydney).title("Unknown"));
+                }else if (city == null && country != null){
+                    if (!country.equals("Israel")) {
+                        txtc1.setText(country);
+                        mMap.addMarker(new MarkerOptions().position(sydney).title(country));
+                    } else {
+                        txtc1.setText("Palestine");
+                        mMap.addMarker(new MarkerOptions().position(sydney).title("Palestine"));
+                    }
+                }else if(country == null && city != null){
                     txtc1.setText(city);
+                    mMap.addMarker(new MarkerOptions().position(sydney).title(city));
+                }else{
+                    if(!country.equals("Israel")) {
+                        txtc1.setText(country + ", " + city);
+                        mMap.addMarker(new MarkerOptions().position(sydney).title(city + ", " + country));
+                    }else{
+                        txtc1.setText("Palestine, " + city);
+                        mMap.addMarker(new MarkerOptions().position(sydney).title("Palestine, " + city));
+                    }
                 }
-
-                mMap.addMarker(new MarkerOptions().position(sydney).title(city));
-
+                //mMap.addMarker(new MarkerOptions().position(sydney).title(city));
                 fetchAndUpdateWeather(Double.toString(x), Double.toString(y));
             }
         });
